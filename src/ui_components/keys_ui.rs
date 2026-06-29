@@ -13,7 +13,7 @@ pub struct TGKeys {
 
 impl MainWindow {
     pub fn show_tg_keys_ui(&mut self, ui: &mut Ui) {
-        CentralPanel::default().show_inside(ui, |ui| {
+        CentralPanel::default().show(ui, |ui| {
             let tg_link = "https://my.telegram.org/";
             ui.label("A valid Telegram API key pair is necessary for the app to work properly. \
                 The key will be saved locally and will never be shared. \

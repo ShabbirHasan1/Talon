@@ -1,5 +1,6 @@
 use chrono::{Local, TimeZone};
 use log::{error, info};
+use std::fmt::Write as _;
 use std::sync::atomic::Ordering;
 
 use crate::tg_handler::{ProcessError, ProcessResult, ProcessStart};
@@ -20,8 +21,7 @@ impl MainWindow {
                     };
 
                     if !failed.is_empty() {
-                        status_text
-                            .push_str(&format!(" Failed connection to: {}", failed.join(", ")));
+                        let _ = write!(status_text, " Failed connection to: {}", failed.join(", "));
                     }
 
                     for client in clients {

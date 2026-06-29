@@ -1,5 +1,5 @@
 use eframe::egui::Context;
-use grammers_client::{Client, Config};
+use grammers_client::{Client, Config, InitParams};
 use grammers_session::Session;
 use log::{error, info};
 use std::sync::mpsc::Sender;
@@ -37,7 +37,7 @@ pub async fn connect_to_session(
                 .map_err(|_| ProcessError::FileCreationError)?,
             api_id,
             api_hash: api_hash.clone(),
-            params: Default::default(),
+            params: InitParams::default(),
         })
         .await;
 

@@ -1,4 +1,5 @@
 use chrono::{NaiveDate, NaiveDateTime};
+use eframe::egui::scroll_area::DragScroll;
 use eframe::egui::{Align, Button, ComboBox, Key, Layout, Response, RichText, Sense, TextEdit, Ui};
 use egui_extras::{Column, DatePickerButton};
 use egui_selectable_table::{
@@ -723,7 +724,7 @@ impl MainWindow {
                 .striped(true)
                 .resizable(true)
                 .cell_layout(Layout::left_to_right(Align::Center))
-                .drag_to_scroll(false)
+                .drag_to_scroll(DragScroll::Never)
                 .auto_shrink([false; 2])
                 .min_scrolled_height(0.0);
 
