@@ -1,7 +1,7 @@
 use chrono::{Datelike, Days, Duration, Months, NaiveDate, NaiveDateTime, Timelike, Weekday};
 use eframe::egui::{CentralPanel, ComboBox, Id, Key, Modal, Panel, ScrollArea, TextEdit, Ui};
 use egui_extras::DatePickerButton;
-use egui_plot::{Bar, BarChart, Legend, Plot, PlotPoint};
+use egui_plot::{Bar, BarChart, HoverPosition, Legend, Plot};
 use nucleo_matcher::Matcher;
 use nucleo_matcher::pattern::{CaseMatching, Normalization, Pattern};
 use std::collections::{BTreeMap, BTreeSet, HashMap};
@@ -248,13 +248,13 @@ impl ChartsData {
         let response = Modal::new(Id::new("customize_view")).show(ui.ctx(), |ui| {
             ui.set_width(400.0);
             ui.set_height(350.0);
-            Panel::top("customize_top_view").show_inside(ui, |ui| {
+            Panel::top("customize_top_view").show(ui, |ui| {
                 ui.vertical_centered(|ui| {
                     ui.heading("Customize View");
                 });
             });
 
-            Panel::bottom(Id::new("customize_bottom_view")).show_inside(ui, |ui| {
+            Panel::bottom(Id::new("customize_bottom_view")).show(ui, |ui| {
                 ui.add_space(5.0);
                 ui.vertical_centered_justified(|ui| {
                     if ui.button("Confirm").clicked() {
@@ -264,7 +264,7 @@ impl ChartsData {
                 })
             });
 
-            CentralPanel::default().show_inside(ui, |ui| {
+            CentralPanel::default().show(ui, |ui| {
                 ui.horizontal(|ui| {
                     let text_edit =
                         TextEdit::singleline(&mut self.search_text).hint_text("Search user");
@@ -1037,7 +1037,16 @@ impl MainWindow {
             self.chart().labels.clone()
         };
 
-        let label_fmt = move |_s: &str, val: &PlotPoint| {
+        let label_fmt = move |position: &HoverPosition| {
+            let val = match position {
+                HoverPosition::NearDataPoint {
+                    plot_name: _,
+                    position,
+                    index: _,
+                }
+                | HoverPosition::Elsewhere { position } => position,
+            };
+
             let x_val = val.x.round() as i64;
             if let Some((date, total, whitelist)) = labels.get(&x_val) {
                 let label_type = if chart_type == ChartType::Message
@@ -1068,12 +1077,12 @@ impl MainWindow {
                         date_label = weekday_num_to_string(x_val as u8);
                     }
                 }
-                format!(
+                Some(format!(
                     "{}\nY = {:.0}\nTotal {label_type} = {}\nWhitelisted {label_type} = {}",
                     date_label, val.y, total, whitelist
-                )
+                ))
             } else {
-                format!("X = {:.0}\nY = {:.0}", val.x, val.y)
+                Some(format!("X = {:.0}\nY = {:.0}", val.x, val.y))
             }
         };
 

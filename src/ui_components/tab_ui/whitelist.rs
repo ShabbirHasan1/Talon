@@ -1,3 +1,4 @@
+use eframe::egui::scroll_area::DragScroll;
 use eframe::egui::{Align, Button, Grid, Label, Layout, Response, RichText, Sense, TextEdit, Ui};
 use egui_extras::Column;
 use egui_selectable_table::{
@@ -367,7 +368,7 @@ then right click on User Table to whitelist",
                 .column(Column::exact(column_size).clip(true))
                 .column(Column::exact(column_size))
                 .column(Column::exact(column_size))
-                .drag_to_scroll(false)
+                .drag_to_scroll(DragScroll::Never)
                 .auto_shrink([false; 2])
                 .min_scrolled_height(0.0)
         });

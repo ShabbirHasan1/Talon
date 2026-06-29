@@ -33,8 +33,7 @@ impl TabState {
             TabState::Counter => vec2(550.0, 400.0),
             TabState::UserTable => vec2(1250.0, 700.0),
             TabState::Charts => vec2(1000.0, 700.0),
-            TabState::Whitelist => vec2(550.0, 600.0),
-            TabState::Blacklist => vec2(550.0, 600.0),
+            TabState::Whitelist | TabState::Blacklist => vec2(550.0, 600.0),
             TabState::Session => vec2(550.0, 320.0),
         }
     }
@@ -110,7 +109,7 @@ impl Display for ProcessState {
                 write!(f, "Status: Could not detect any valid chat details")
             }
             ProcessState::DataCopied => {
-                write!(f, "Status: Selected table data copied.",)
+                write!(f, "Status: Selected table data copied.")
             }
             ProcessState::AuthorizationError => write!(
                 f,

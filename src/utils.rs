@@ -4,6 +4,7 @@ use log::{error, info};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::error::Error;
+use std::fmt::Write as _;
 use std::fs::{self, File};
 use std::io::{Read, Write};
 use std::path::PathBuf;
@@ -47,20 +48,20 @@ pub fn chat_to_text(start: &str, end: &str) -> String {
         let mut chat_text = format!(" {name}");
 
         if let Some(end_point) = parsed.end_point() {
-            chat_text += &format!(": {end_point} - ");
+            let _ = write!(chat_text, ": {end_point} - ");
 
             if let Some(start_point) = parsed.start_point() {
-                chat_text += &format!("{start_point}");
+                let _ = write!(chat_text, "{start_point}");
             } else {
                 chat_text += "∞";
             }
         } else if let Some(start_point) = parsed.start_point() {
             chat_text += ": 1 - ";
-            chat_text += &format!("{start_point}");
+            let _ = write!(chat_text, "{start_point}");
         } else {
             chat_text += ": ∞";
         }
-        text_data += &format!(" {chat_text}");
+        let _ = write!(text_data, " {chat_text}");
     }
 
     text_data

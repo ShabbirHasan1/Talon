@@ -143,7 +143,7 @@ impl App for MainWindow {
             AppState::InitializedUI => {
                 Panel::top("top_panel")
                     .show_separator_line(true)
-                    .show_inside(ui, |ui| {
+                    .show(ui, |ui| {
                         if self.theme_animator.anim_id.is_none() {
                             self.theme_animator.create_id(ui);
                         } else {
@@ -204,7 +204,7 @@ impl App for MainWindow {
                     });
                 Panel::bottom("bottom_panel")
                     .show_separator_line(true)
-                    .show_inside(ui, |ui| {
+                    .show(ui, |ui| {
                         ui.add_space(4.0);
                         let status_text = self.process_state.to_string();
                         ui.horizontal(|ui| {
@@ -217,7 +217,7 @@ impl App for MainWindow {
                         });
                         ui.add_space(0.5);
                     });
-                CentralPanel::default().show_inside(ui, |ui| {
+                CentralPanel::default().show(ui, |ui| {
                     match self.tab_state {
                         TabState::Counter => self.show_counter_ui(ui),
                         TabState::UserTable => self.show_user_table_ui(ui),
@@ -264,12 +264,12 @@ impl App for MainWindow {
                             ui.set_width(300.0);
                             ui.set_height(300.0);
 
-                            Panel::top("version_top_panel").show_inside(ui, |ui| {
+                            Panel::top("version_top_panel").show(ui, |ui| {
                                 ui.vertical_centered(|ui| {
                                     ui.heading("A new version is available");
                                 });
                             });
-                            Panel::bottom("version_bottom_panel").show_inside(ui, |ui| {
+                            Panel::bottom("version_bottom_panel").show(ui, |ui| {
                                 ui.horizontal(|ui| {
                                     let available_width = ui.available_width();
                                     let button_width = available_width / 2.0;
@@ -296,7 +296,7 @@ impl App for MainWindow {
                                 });
                             });
 
-                            CentralPanel::default().show_inside(ui, |ui| {
+                            CentralPanel::default().show(ui, |ui| {
                                 ScrollArea::vertical().show(ui, |ui| {
                                     ui.label(modal_text);
                                 });
